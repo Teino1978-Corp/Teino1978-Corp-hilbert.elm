@@ -1,16 +1,18 @@
 main : Element
-main = collage 200 420
+main = collage 400 400
          ( 
-         map (move (0,  110) ) [redSquare ,  redCorner ] ++
-         map (move (0, 0) ) (motif y blue ) ++
-         map (move (0, -110) ) (motif (t (t x)) green )
+         map (move (50, 0) ) [redSquare ,  redCorner ] ++
+         map (move (50, 0) ) (motif y blue ) ++
+         map (move (50, 0) ) (motif (t (t x)) green ) ++
+         map (move (50, 0) ) (motif (t (t (t x))) orange ) 
          )
 
 -- especially the last item sq is pretty good
 
 redSquare  : Form
 redSquare  = traced  (solid   red) (path x)
-redCorner  = move         (last x) (filled red  (circle 5.0))
+--redCorner  = move         (last x) (filled red  (circle 5.0))
+redCorner  = move         (last x) (filled red  (circle 3.0))
 
 blueSquare : Form
 blueSquare = traced  (dashed blue) (path (map t2 x))
@@ -20,7 +22,7 @@ sq : ((number, number) -> (number, number)) -> [Form]
 sq f = [ traced (dashed blue) (path (map f x)) , move (f (last x)) (filled blue (circle 5.0))]
 
 motif : [(number, number)] -> Color -> [Form]
-motif z color = [ traced (dashed color) (path z) , move ( last z) (filled color (circle 5.0))]
+motif z color = [ traced (solid color) (path z) , move ( last z) (filled color (circle 3.0))]
 
 
 -- ceci n'est pas un square
@@ -45,16 +47,16 @@ add a b = ((fst a)+(fst b), (snd a)+(snd b))
 -- implementations of the symmetries of hilbert space curve
 
 t1 : (number, number) -> (number, number)
-t1 b = (add (mul 0.667 (-50,-50)) ((mul 0.333) (rot (rot(rot (xflip b))) )))
+t1 b = (add (mul 0.5 (-100,-100)) ((mul 0.5) (rot (rot(rot (xflip b))) )))
 
 t2 : (number, number) -> (number, number)
-t2 b = (add (mul 0.667 (-50,50)) ((mul 0.333) (b)))
+t2 b = (add (mul 0.5 (-100,100)) ((mul 0.5) (b)))
 
 t3 : (number, number) -> (number, number)
-t3 b = (add (mul 0.667 (50,50)) ((mul 0.333) ( b)))
+t3 b = (add (mul 0.5 (100,100)) ((mul 0.5) ( b)))
 
 t4 : (number, number) -> (number, number)
-t4 b = (add (mul 0.667 (50,-50)) ((mul 0.333) (rot (xflip b) )))
+t4 b = (add (mul 0.5 (100,-100)) ((mul 0.5) (rot (xflip b) )))
 
 --
 
