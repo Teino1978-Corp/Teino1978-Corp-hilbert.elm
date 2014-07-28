@@ -3,8 +3,11 @@ main = collage 200 420
          ( 
          map (move (0, -55) ) [ blueSquare , blueCorner ] ++
          map (move (0,  55) ) [  redSquare ,  redCorner ] ++
-         map (move (0, -55) ) (sq t3)
+         map (move (0, -55) ) (sq t3) ++
+         map (move (0, -55) ) (sq t4) ++ map (move (0, -55) ) (sq t1)
          )
+
+-- especially the last item sq is pretty good
 
 redSquare  : Form
 redSquare  = traced  (solid   red) (path x)
@@ -18,11 +21,18 @@ sq : ((number, number) -> (number, number)) -> [Form]
 sq f = [ traced (dashed blue) (path (map f x)) , move (f (last x)) (filled blue (circle 5.0))]
 
 
+-- ceci n'est pas un square
+
 x : [(number, number)]
 x = [  (-50,-50), (-50,50), (50,50), (50,-50) ]
 
+-- some building block transformations
+
 xflip : (number, number) -> (number, number)
 xflip pt = ( -1*(fst pt), snd pt)
+
+rot : (number, number) -> (number, number)
+rot pt = ( -1*(snd pt), fst pt)
 
 mul : number -> (number, number) -> (number, number)
 mul a b = (a*(fst b), a*(snd b))
@@ -30,8 +40,16 @@ mul a b = (a*(fst b), a*(snd b))
 add : (number, number) -> (number, number) -> (number, number)
 add a b = ((fst a)+(fst b), (snd a)+(snd b))
 
+-- implementations of the symmetries of hilbert space curve
+
+t1 : (number, number) -> (number, number)
+t1 b = (add (mul 0.667 (-50,-50)) ((mul 0.333) (rot (rot(rot b)) )))
+
 t2 : (number, number) -> (number, number)
 t2 b = (add (mul 0.667 (-50,50)) ((mul 0.333) (xflip b)))
 
 t3 : (number, number) -> (number, number)
 t3 b = (add (mul 0.667 (50,50)) ((mul 0.333) (xflip b)))
+
+t4 : (number, number) -> (number, number)
+t4 b = (add (mul 0.667 (50,-50)) ((mul 0.333) (rot b )))
