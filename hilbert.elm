@@ -3,7 +3,7 @@ main = collage 200 420
          ( 
          map (move (0,  110) ) [redSquare ,  redCorner ] ++
          map (move (0, 0) ) (motif y blue ) ++
-         map (move (0, -110) ) (motif y green )
+         map (move (0, -110) ) (motif (t (t x)) green )
          )
 
 -- especially the last item sq is pretty good
@@ -60,3 +60,6 @@ t4 b = (add (mul 0.667 (50,-50)) ((mul 0.333) (rot (xflip b) )))
 
 y : [(number, number)]
 y = (map t1 x) ++ (map t2 x) ++ (map t3 x) ++ (map t4 x)
+
+t : [(number, number)] -> [(number, number)]
+t z = (map t1 z) ++ (map t2 z) ++ (map t3 z) ++ (map t4 z)
