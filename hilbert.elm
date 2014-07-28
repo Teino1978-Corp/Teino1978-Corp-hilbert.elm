@@ -1,25 +1,10 @@
 main : Element
-main = collage 400 400
-         ( 
-         map (move (50, 0) ) [redSquare ,  redCorner ] ++
-         map (move (50, 0) ) (motif y blue ) ++
-         map (move (50, 0) ) (motif (t (t x)) green ) ++
-         map (move (50, 0) ) (motif (t (t (t x))) orange ) 
-         )
-
--- especially the last item sq is pretty good
-
-redSquare  : Form
-redSquare  = traced  (solid   red) (path x)
---redCorner  = move         (last x) (filled red  (circle 5.0))
-redCorner  = move         (last x) (filled red  (circle 3.0))
-
-blueSquare : Form
-blueSquare = traced  (dashed blue) (path (map t2 x))
-blueCorner = move    (t2 (last x)) (filled blue (circle 5.0))
-
-sq : ((number, number) -> (number, number)) -> [Form]
-sq f = [ traced (dashed blue) (path (map f x)) , move (f (last x)) (filled blue (circle 5.0))]
+main = collage 400 400 
+         (map (move (50, 0) )( 
+         (motif x red ) ++ (motif (t x) blue ) ++ (motif (t (t x)) green ) ++
+         (motif (t (t (t x))) orange ) ))
+        
+-- build motif from path and color
 
 motif : [(number, number)] -> Color -> [Form]
 motif z color = [ traced (solid color) (path z) , move ( last z) (filled color (circle 3.0))]
@@ -59,9 +44,6 @@ t4 : (number, number) -> (number, number)
 t4 b = (add (mul 0.5 (100,-100)) ((mul 0.5) (rot (xflip b) )))
 
 --
-
-y : [(number, number)]
-y = (map t1 x) ++ (map t2 x) ++ (map t3 x) ++ (map t4 x)
 
 t : [(number, number)] -> [(number, number)]
 t z = (map t1 z) ++ (map t2 z) ++ (map t3 z) ++ (map t4 z)
